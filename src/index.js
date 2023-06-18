@@ -8,25 +8,25 @@ const cors = require("cors");
 
 const app = express();
 app.use(
-	cors({
-		origin: "http://localhost:5173",
-	})
+  cors({
+    origin: "https://food-explorer-frontend-alpha.vercel.app",
+  })
 );
 app.use(express.json());
 app.use(router);
 app.use(express.static("src/uploads"));
 app.use((error, _req, res, _next) => {
-	if (error instanceof AppError) {
-		return res
-			.status(error.status)
-			.json({ message: error.message, status: "error" });
-	}
+  if (error instanceof AppError) {
+    return res
+      .status(error.status)
+      .json({ message: error.message, status: "error" });
+  }
 
-	console.log(error);
+  console.log(error);
 
-	return res
-		.status(500)
-		.json({ message: "Internal Server Error", status: "error" });
+  return res
+    .status(500)
+    .json({ message: "Internal Server Error", status: "error" });
 });
 
 const PORT = process.env.PORT || 3000;
