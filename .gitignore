@@ -2,4 +2,3 @@ node_modules
 .env
 pnpm-lock.yaml
 src/uploads
-src/database/data.db
