@@ -83,25 +83,25 @@ class DishController {
     }
 
     try {
-      const dishesWithCategory = await connection("dishes")
-        .select("*")
-        .where({ category_id: Number(targetDish.category_id) });
-
-      if (dishesWithCategory.length == 1) {
-        await connection("categories")
-          .delete("*")
-          .where({ id: Number(targetDish.category_id) });
-      }
-
       await connection("dishes")
         .delete()
         .where("id", Number(id))
-        .then((deletedRows) => {
+        .then(async (deletedRows) => {
           if (deletedRows) {
-            res.status(200).json({
-              message: "Prato excluído com sucesso.",
-            });
+            const oldCategoryDishes = await connection("dishes")
+              .select("*")
+              .where({ category_id: Number(targetDish.category_id) });
+
+            if (oldCategoryDishes.length == 0) {
+              await connection("categories")
+                .delete("*")
+                .where({ id: Number(targetDish.category_id) });
+            }
           }
+
+          res.status(200).json({
+            message: "Prato excluído com sucesso.",
+          });
         });
     } catch (err) {
       throw new AppError(500, "Erro ao excluir prato.");
