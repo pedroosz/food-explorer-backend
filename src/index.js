@@ -8,7 +8,7 @@ const cors = require("cors");
 
 const app = express();
 
-if (process.env.DEVELOPMENT) {
+if (process.env.DEVELOPMENT == true) {
   app.use(
     cors({
       origin: process.env.DEVELOPMENT_FRONTEND_ENDPOINT,
@@ -44,7 +44,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
   console.log(
     `[${
-      process.env.DEVELOPMENT ? "DEV" : "PROD"
+      process.env.DEVELOPMENT == true ? "DEV" : "PROD"
     } SERVER] => Running on port ${PORT}`
   )
 );
