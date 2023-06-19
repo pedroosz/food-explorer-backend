@@ -83,6 +83,16 @@ class DishController {
     }
 
     try {
+      const dishesWithCategory = await connection("dishes")
+        .select("*")
+        .where({ category_id: Number(targetDish.category_id) });
+
+      if (dishesWithCategory.length == 1) {
+        await connection("categories")
+          .delete("*")
+          .where({ id: Number(targetDish.category_id) });
+      }
+
       await connection("dishes")
         .delete()
         .where("id", Number(id))
